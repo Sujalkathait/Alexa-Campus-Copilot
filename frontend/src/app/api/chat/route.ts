@@ -244,7 +244,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           ...fallback,
-          reply: `${fallback.reply}\n\n*(Note: Running in offline academic mode. Add your GEMINI_API_KEY in .env.local or Vercel Environment Variables to unlock live Gemini 2.5/Flash AI generation.)*`,
+          reply: `${fallback.reply}\n\n*(Note: Running in offline academic mode. Add your GEMINI_API_KEY in .env.local or Vercel Environment Variables to unlock live Gemini 3.8 Flash AI generation.)*`,
         },
         { status: 200 }
       );
