@@ -308,15 +308,25 @@ export async function POST(req: NextRequest) {
     // Parse JSON or clean text
     let parsedData: any = null;
     try {
-      const cleaned = responseText
+      let cleaned = responseText
         .replace(/^```json\s*/i, '')
         .replace(/^```\s*/i, '')
         .replace(/\s*```$/i, '')
         .trim();
+
+      const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        cleaned = jsonMatch[0];
+      }
+
       parsedData = JSON.parse(cleaned);
     } catch {
+      // Regex extraction fallback for reply
+      const replyMatch = responseText.match(/"reply"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
+      const extractedReply = replyMatch ? replyMatch[1].replace(/\\"/g, '"').replace(/\\n/g, '\n') : responseText;
+
       parsedData = {
-        reply: responseText || "I've reviewed your request. How else can I assist with your coursework?",
+        reply: extractedReply || "I've reviewed your request. How else can I assist with your coursework?",
         action_required: false,
         executed_actions: [],
         suggested_replies: ['Plan study for 2 hours tonight', 'Add a new assignment', 'Explain concept'],

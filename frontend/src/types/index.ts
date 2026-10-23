@@ -1,6 +1,6 @@
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
 export type AssignmentStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
-export type SessionStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+export type SessionStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'UPCOMING';
 export type ReminderStatus = 'PENDING' | 'SENT' | 'CANCELLED';
 export type PlanningStrategyId = 'deadline_first' | 'priority_first' | 'workload_balance';
 

@@ -384,25 +384,58 @@ export default function CampusCopilotApp() {
 
     try {
       const history = chatMessages.slice(-4).map((m) => ({ role: m.role, content: m.content }));
-      const response = await api.sendChatMessage(query, history);
+      let response = await api.sendChatMessage(query, history);
+
+      if (typeof response === 'string') {
+        try {
+          response = JSON.parse(response);
+        } catch {
+          response = { reply: response };
+        }
+      }
+
+      let cleanReply = response?.reply || '';
+      let executedActions = response?.executed_actions || [];
+      let suggestedReplies = response?.suggested_replies || [];
+
+      // If reply itself is a stringified JSON object (as shown in user demo video/screenshot), extract clean message
+      if (typeof cleanReply === 'string' && cleanReply.trim().startsWith('{')) {
+        try {
+          const inner = JSON.parse(cleanReply.trim());
+          if (inner.reply) {
+            cleanReply = inner.reply;
+            if (inner.executed_actions && inner.executed_actions.length > 0) {
+              executedActions = inner.executed_actions;
+            }
+            if (inner.suggested_replies && inner.suggested_replies.length > 0) {
+              suggestedReplies = inner.suggested_replies;
+            }
+          }
+        } catch {
+          const match = cleanReply.match(/"reply"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
+          if (match) {
+            cleanReply = match[1].replace(/\\"/g, '"').replace(/\\n/g, '\n');
+          }
+        }
+      }
 
       const assistantMsg: ChatMessage = {
         id: `asst-${Date.now()}`,
         role: 'assistant',
-        content: response.reply,
+        content: cleanReply,
         timestamp: new Date().toISOString(),
-        action_required: response.action_required,
-        executed_actions: response.executed_actions,
-        suggested_replies: response.suggested_replies,
+        action_required: response?.action_required,
+        executed_actions: executedActions,
+        suggested_replies: suggestedReplies,
       };
 
       setChatMessages((prev) => [...prev, assistantMsg]);
 
-      if (ttsEnabled && response.reply) {
-        speak(response.reply);
+      if (ttsEnabled && cleanReply) {
+        speak(cleanReply);
       }
 
-      if (response.executed_actions && response.executed_actions.length > 0) {
+      if (executedActions && executedActions.length > 0) {
         loadData();
       }
     } catch (err: any) {
@@ -457,7 +490,13 @@ export default function CampusCopilotApp() {
   }, [searchQuery, assignments, sessions, reminders]);
 
   return (
-    <div className="min-h-screen bg-[#0a0d14] text-slate-100 flex">
+    <div className="min-h-screen bg-[#080b14] text-slate-100 flex relative overflow-x-hidden w-full max-w-full selection:bg-purple-500/30 selection:text-purple-200">
+      {/* Subtle ambient lighting safely contained to prevent any horizontal scroll overflow */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-0 left-1/3 w-[650px] h-[340px] bg-gradient-to-tr from-purple-600/10 via-indigo-600/8 to-pink-500/5 blur-[130px] rounded-full" />
+        <div className="absolute bottom-0 right-10 w-[500px] h-[260px] bg-gradient-to-tl from-purple-900/10 via-indigo-950/10 to-transparent blur-[140px] rounded-full" />
+      </div>
+
       {/* Toast Notification Layer */}
       <Toast toasts={toasts} onDismiss={dismissToast} />
 
@@ -470,7 +509,7 @@ export default function CampusCopilotApp() {
         }}
         overdueCount={overdueCount}
         onQuickAddAssignment={() => setIsQuickAddOpen(true)}
-        weeklyHoursStudied={summary?.today_study_minutes_planned ? Number((summary.today_study_minutes_planned / 60 + 12).toFixed(1)) : 14.5}
+        weeklyHoursStudied={summary?.today_study_minutes_planned ? Number((summary.today_study_minutes_planned / 60 + 12).toFixed(1)) : 15.8}
         weeklyTargetHours={20}
         user={user}
         onOpenLoginModal={() => {
@@ -481,7 +520,7 @@ export default function CampusCopilotApp() {
       />
 
       {/* Main App Content Viewport */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden">
         {/* Top Navbar */}
         <Navbar
           onToggleVoice={handleToggleVoice}
@@ -503,7 +542,7 @@ export default function CampusCopilotApp() {
         />
 
         {/* Viewport Router Switch */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
           {activeTab === 'dashboard' && (
             <DashboardView
               summary={summary}

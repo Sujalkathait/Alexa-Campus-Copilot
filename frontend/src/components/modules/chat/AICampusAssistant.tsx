@@ -30,6 +30,29 @@ interface AICampusAssistantProps {
   onToggleTts: () => void;
 }
 
+function formatMessageText(content: string): string {
+  if (!content) return '';
+  const trimmed = content.trim();
+  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (parsed && typeof parsed.reply === 'string') {
+        return parsed.reply;
+      }
+    } catch {
+      const match = trimmed.match(/"reply"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+      if (match && match[1]) {
+        try {
+          return JSON.parse(`"${match[1]}"`);
+        } catch {
+          return match[1];
+        }
+      }
+    }
+  }
+  return content;
+}
+
 export function AICampusAssistant({
   messages,
   onSendMessage,
@@ -118,6 +141,7 @@ export function AICampusAssistant({
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
         {messages.map((msg) => {
           const isUser = msg.role === 'user';
+          const displayText = formatMessageText(msg.content);
           return (
             <div
               key={msg.id}
@@ -143,12 +167,12 @@ export function AICampusAssistant({
                       : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                  <p className="whitespace-pre-wrap">{displayText}</p>
 
-                  {!isUser && msg.content && (
+                  {!isUser && displayText && (
                     <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-end">
                       <button
-                        onClick={() => onSpeakText(msg.content)}
+                        onClick={() => onSpeakText(displayText)}
                         className="text-slate-400 hover:text-blue-300 p-0.5 rounded transition-colors text-[10px] flex items-center gap-1"
                         title="Read aloud"
                       >

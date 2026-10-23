@@ -4,6 +4,7 @@ import {
   Mic,
   MicOff,
   Search,
+  Bell,
   LogOut,
   Trash2,
   Settings,
@@ -56,17 +57,17 @@ export function Navbar({
   const isAuthenticated = user.isAuthenticated !== false;
 
   return (
-    <header className="sticky top-0 z-40 w-full h-16 border-b border-slate-800/80 bg-[#0a0d14]/85 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
-      {/* Search / Command Bar trigger - Jakob's Law & Fitts's Law */}
-      <div className="flex items-center gap-3 flex-1 max-w-md">
+    <header className="sticky top-0 z-40 w-full h-16 border-b border-slate-800/80 bg-[#0b0f19]/85 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
+      {/* Search / Command Bar trigger */}
+      <div className="flex items-center gap-3 flex-1 max-w-lg min-w-0">
         <button
           onClick={onOpenQuickSearch}
-          className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors"
+          className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-[#0f1423] border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors min-w-0"
           title="Open Command Palette (⌘K or Ctrl+K)"
         >
-          <Search className="w-3.5 h-3.5 text-slate-500" />
-          <span className="flex-1 text-left">Search coursework, commands, study sessions...</span>
-          <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 text-slate-400 rounded border border-slate-700">
+          <Search className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+          <span className="flex-1 text-left truncate min-w-0">Search coursework, commands, study sessions...</span>
+          <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-mono bg-slate-800/80 text-slate-400 rounded border border-slate-700 shrink-0">
             ⌘K
           </kbd>
         </button>
@@ -74,13 +75,13 @@ export function Navbar({
 
       {/* Right Controls */}
       <div className="flex items-center gap-3">
-        {/* Prominent Voice Assistant Button */}
+        {/* Voice Assistant Button */}
         <button
           onClick={onToggleVoice}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium border transition-all duration-200 ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 ${
             isListening
-              ? 'bg-rose-500/15 border-rose-500/40 text-rose-300 shadow-md shadow-rose-500/20'
-              : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-blue-500/40 hover:text-blue-300'
+              ? 'bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-md shadow-rose-500/20'
+              : 'bg-[#0f1423] border-slate-800 text-slate-300 hover:border-purple-500/40 hover:text-purple-300'
           }`}
           title={isListening ? 'Click to stop listening' : 'Spoken Voice Assistant (Speech Recognition)'}
         >
@@ -95,10 +96,20 @@ export function Navbar({
             </>
           ) : (
             <>
-              <Mic className="w-3.5 h-3.5 text-blue-400" />
+              <Mic className="w-3.5 h-3.5 text-purple-400" />
               <span className="hidden sm:inline">Voice Assistant</span>
             </>
           )}
+        </button>
+
+        {/* Notifications Icon with Red Dot */}
+        <button
+          onClick={() => onNavigateTab?.('reminders')}
+          className="relative p-2 rounded-full bg-[#0f1423] border border-slate-800 text-slate-400 hover:text-white transition-colors"
+          title="Reminders & Notifications"
+        >
+          <Bell className="w-4 h-4" />
+          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-rose-500" />
         </button>
 
         {/* Authentication Controls: User Dropdown or Sign In CTA */}
@@ -106,21 +117,20 @@ export function Navbar({
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-2 pl-2.5 py-1 pr-1.5 rounded-xl border border-transparent hover:border-slate-800 hover:bg-slate-900/60 transition-colors"
+              className="flex items-center gap-2.5 pl-2 py-1 pr-2 rounded-full border border-slate-800/80 hover:border-slate-700 bg-[#0f1423] transition-colors"
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
             >
-              <div className="relative">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-violet-600 flex items-center justify-center text-white text-xs font-semibold shadow-sm">
-                  {user.name.split(' ').map((n) => n[0]).join('')}
-                </div>
-                {/* Online indicator dot */}
-                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-[#0a0d14]" />
+              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                {user.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
               </div>
 
               <div className="text-left hidden md:block">
-                <div className="text-xs font-medium text-slate-200 leading-tight">{user.name}</div>
-                <div className="text-[10px] text-slate-400 font-mono">{user.timezone}</div>
+                <div className="text-xs font-semibold text-slate-200 leading-tight">{user.name}</div>
+                <div className="text-[10px] text-slate-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>{user.timezone || 'Asia/Kolkata'}</span>
+                </div>
               </div>
 
               <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />

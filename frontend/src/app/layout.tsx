@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   description: 'AI-powered campus copilot for university students. Intelligently manage coursework, deadlines, automated study schedules, and voice-assisted academic productivity.',
   keywords: ['Campus Copilot', 'Academic Assistant', 'AI Study Planner', 'Student Productivity', 'Linear SaaS'],
   authors: [{ name: 'Alexa+ Campus Copilot Team' }],
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export const viewport: Viewport = {
