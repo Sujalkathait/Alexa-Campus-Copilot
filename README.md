@@ -1,4 +1,4 @@
-# Alexa+ Campus Copilot 🎓⚡
+# Alexa+ Campus Copilot
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.2-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -9,163 +9,170 @@
 [![Vercel Ready](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> **The Commercial-Grade Academic Productivity & Workflow SaaS for University Students.**  
-> Unifying assignment tracking, automated study schedules, countdown timers, intelligent reminders, and a voice-powered AI campus copilot in a sleek Linear/Stripe/Notion-inspired dark aesthetic.
+> **A smart, simple study assistant and task planner for college students.**  
+> Track homework, make automatic study schedules, count down deadlines, set reminders, and talk to a voice-enabled AI helper. Built with a clean, dark look inspired by Linear, Notion, and Stripe.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-1. [Quick Summary (TL;DR)](#-quick-summary-tldr)
-2. [Product Overview & Problem Solved](#-product-overview--problem-solved)
-3. [System Architecture Diagram](#-system-architecture-diagram)
-4. [Quickstart Guide (Easy 3-Step Setup)](#-quickstart-guide-easy-3-step-setup)
-   - [Option 1: Frontend Only (Recommended)](#option-1-frontend-only-recommended)
-   - [Option 2: Full-Stack (Next.js + Python FastAPI)](#option-2-full-stack-nextjs--fastapi)
-5. [Platform Command Reference & Hotkeys](#-platform-command-reference--hotkeys)
-6. [The 7 Core Academic Modules](#-the-7-core-academic-modules)
-7. [The 13 UI/UX Design Laws Applied](#-the-13-uiux-design-laws-applied)
-8. [Google Gemini API Integration & Security](#-google-gemini-api-integration--security)
-9. [Sample Voice & Text Prompts](#-sample-voice--text-prompts)
-10. [Design Patterns & Architecture](#-design-patterns--architecture)
-11. [Vercel Deployment Walkthrough](#-vercel-deployment-walkthrough)
-12. [Project Directory Tree](#-project-directory-tree)
-13. [API Endpoints Reference](#-api-endpoints-reference)
-14. [Design Tokens & UI Theme Palette](#-design-tokens--ui-theme-palette)
-15. [Environment Variables Matrix](#-environment-variables-matrix)
-16. [Troubleshooting & Frequently Asked Questions (FAQ)](#-troubleshooting--frequently-asked-questions-faq)
-17. [License & Acknowledgments](#-license--acknowledgments)
-
----
-
-## ⚡ Quick Summary (TL;DR)
-
-- **What is it?** An all-in-one AI academic assistant and study scheduler built specifically for university students.
-- **Frontend:** Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS v4, Lucide Icons.
-- **AI Core:** Google Gemini (`gemini-3.8-flash`) via the official `@google/genai` SDK with built-in quota caching and sliding-window rate limiting.
-- **Backend (Optional):** Python FastAPI with SQLite/PostgreSQL, SQLAlchemy, and clean Domain-Driven Design patterns.
-- **Voice Support:** Two-way voice interaction using Web Speech Recognition and SpeechSynthesis Text-to-Speech (TTS).
-- **Zero Config Demo:** Click the **"Demo Student"** button on the login modal to test instantly without creating an account.
+1. [Quick Summary](#quick-summary)
+2. [Why We Built This](#why-we-built-this)
+3. [How the App Works](#how-the-app-works)
+4. [Quick Setup Guide](#quick-setup-guide)
+   - [Option 1: Frontend Only (Quickest)](#option-1-frontend-only-quickest)
+   - [Option 2: Full-Stack (Next.js + Python)](#option-2-full-stack-nextjs--python)
+5. [Commands and Keyboard Shortcuts](#commands-and-keyboard-shortcuts)
+6. [The 7 Features Explained Simply](#the-7-features-explained-simply)
+7. [The 13 Design Rules We Used](#the-13-design-rules-we-used)
+8. [How the Gemini AI Works](#how-the-gemini-ai-works)
+9. [Example Things You Can Ask the AI](#example-things-you-can-ask-the-ai)
+10. [How the Code is Organized](#how-the-code-is-organized)
+11. [How to Deploy on Vercel](#how-to-deploy-on-vercel)
+12. [Project Folder Tree](#project-folder-tree)
+13. [API Routes List](#api-routes-list)
+14. [Colors and Theme Details](#colors-and-theme-details)
+15. [Settings and Environment File](#settings-and-environment-file)
+16. [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
+17. [License and Credits](#license-and-credits)
 
 ---
 
-## 🌟 Product Overview & Problem Solved
+## Quick Summary
 
-College students face persistent friction organizing coursework across disconnected spreadsheets, LMS portals, and notes apps:
-- **Missed assignment deadlines** leading to avoidable grade penalties and last-minute panic.
-- **Poor time estimation** causing students to either overwork or procrastinate on heavy problem sets.
-- **Unstructured study sessions** resulting in burnout during midterm and final exam weeks.
-- **Fragmented tools** requiring students to juggle three to four separate productivity applications.
-
-**Alexa+ Campus Copilot** eliminates this friction through a unified command center:
-1. **AI Understands & Plans:** Students talk or type in natural language; Gemini translates unstructured thoughts into actionable academic items.
-2. **Algorithms Schedule:** The scheduler applies deadline proximity, subject difficulty, and study breaks to generate realistic blocks.
-3. **Graceful Offline Engine:** If offline or without an API key, built-in heuristic datasets keep all 7 core modules 100% interactive.
+- **What is this?** A web app that helps university students manage homework, exams, and daily study time with an AI assistant.
+- **Frontend:** Built with Next.js 15, React 19, TypeScript, Tailwind CSS v4, and Lucide Icons.
+- **AI Engine:** Google Gemini 3.8 Flash using the official Google GenAI SDK. Works fast, stays secure on the server, and saves quota with smart caching.
+- **Optional Backend:** Python FastAPI with an SQLite database and clean code layout.
+- **Voice Support:** You can speak directly to the assistant, and it can read answers back to you out loud.
+- **Instant Demo:** No sign-up needed. Open the login box and click **"Demo Student"** to test everything right away.
 
 ---
 
-## 🗺️ System Architecture Diagram
+## Why We Built This
+
+College students usually have to check many different places to keep up with school:
+- Deadlines hidden inside course syllabus PDFs.
+- Homework dates sent on WhatsApp or email.
+- Study reminders scattered across phone alarms.
+- Complicated calendar apps that take too long to update.
+
+This leads to common problems:
+- Students forget homework and lose marks.
+- Students do not know how many hours a project will take.
+- Students cram the night before exams and burn out.
+
+**Alexa+ Campus Copilot puts everything in one place:**
+1. **Talk or Type:** Tell the AI what you have to do in normal words. It creates tasks and study blocks for you.
+2. **Auto-Scheduler:** It looks at your deadlines and picks the best times for you to study, with short breaks included.
+3. **Works Without an API Key:** If you do not have a Gemini key, the app still works completely with built-in demo data.
+
+---
+
+## How the App Works
+
+The diagram below shows how the student, the browser, and the backend services communicate.
 
 ```mermaid
 flowchart TD
-    User([Student / User]) -->|Voice / Click / Keyboard| UI[Next.js 15 Frontend UI]
-    UI -->|Quick Search ⌘K| Palette[Global Command Palette]
-    UI -->|Microphone Audio| SpeechRec[Web Speech Recognition API]
-    UI -->|Audio Response| TTS[SpeechSynthesis Engine]
+    User(["Student / User"]) -->|Voice / Click / Keyboard| UI["Next.js 15 Web App"]
+    UI -->|Quick Search Ctrl+K| Palette["Command Search Bar"]
+    UI -->|Microphone Audio| SpeechRec["Browser Speech Recognition"]
+    UI -->|Spoken Voice Audio| TTS["Browser Voice Speaker"]
 
-    subgraph Presentation & Serverless Layer
-        UI -->|POST /api/chat| ServerlessRoute[Next.js API Route Handler]
-        ServerlessRoute --> RateLimiter[Sliding-Window Limiter (20 req/min)]
-        RateLimiter --> CacheEngine[LRU Cache (10-min TTL)]
-        CacheEngine --> GoogleSDK[Official Google GenAI SDK]
-        GoogleSDK -->|gemini-3.8-flash| GeminiAPI[(Google Gemini Cloud API)]
-        ServerlessRoute -->|Fallback on Quota Exceeded| HeuristicEngine[Built-in Copilot Heuristics]
+    subgraph Serverless ["Next.js Server and API Layer"]
+        UI -->|POST /api/chat| ServerlessRoute["Chat API Route Handler"]
+        ServerlessRoute --> RateLimiter["Rate Limiter (Max 20 req/min)"]
+        RateLimiter --> CacheEngine["Memory Cache (10-Minute Save)"]
+        CacheEngine --> GoogleSDK["Google GenAI SDK"]
+        GoogleSDK -->|gemini-3.8-flash| GeminiAPI[("Google Gemini Cloud")]
+        ServerlessRoute -->|Backup If Quota Low| HeuristicEngine["Smart Offline Answers"]
     end
 
-    subgraph Python FastAPI Backend (Optional)
-        UI -->|Proxy /api/*| FastAPIRouter[FastAPI REST API Router]
-        FastAPIRouter --> Dispatcher[Command Dispatcher Pattern]
-        Dispatcher --> StrategyEngine[Study Planning Strategies]
-        StrategyEngine -->|Deadline / Priority / Balance| Scheduler[Calendar Matrix Engine]
-        Dispatcher --> EventBus[Domain Event Bus]
-        EventBus --> ActivityFeed[Live Activity Feed Logger]
-        Dispatcher --> Repositories[Repository Pattern]
-        Repositories --> DB[(SQLite / PostgreSQL)]
+    subgraph Backend ["Optional Python FastAPI Backend"]
+        UI -->|Proxy /api/*| FastAPIRouter["FastAPI Main Router"]
+        FastAPIRouter --> Dispatcher["Command Runner"]
+        Dispatcher --> StrategyEngine["Study Plan Calculator"]
+        StrategyEngine -->|Deadlines / Priorities / Balance| Scheduler["Weekly Timetable Builder"]
+        Dispatcher --> EventBus["Activity Event Bus"]
+        EventBus --> ActivityFeed["Recent Actions Feed"]
+        Dispatcher --> Repositories["Database Access"]
+        Repositories --> DB[("SQLite Database File")]
     end
 ```
 
 ---
 
-## 🚀 Quickstart Guide (Easy 3-Step Setup)
+## Quick Setup Guide
 
-### System Requirements
-- **Node.js:** v18.18+ or v20.x+ ([Download Node.js](https://nodejs.org/)).
-- **Python:** v3.11+ (only needed if running the optional FastAPI backend).
-- **Gemini API Key:** Free tier from [Google AI Studio](https://aistudio.google.com/app/apikey).
+### What You Need First
+- **Node.js:** Version 18 or 20 installed on your computer ([Download Node.js](https://nodejs.org/)).
+- **Python:** Version 3.11 or newer (only if you want to run the optional Python backend).
+- **Free Gemini API Key:** Get one for free at [Google AI Studio](https://aistudio.google.com/app/apikey).
 
 ---
 
-### Option 1: Frontend Only (Recommended)
+### Option 1: Frontend Only (Quickest)
 
-The frontend is a complete standalone web application with built-in serverless routes and seeded coursework datasets.
+This is the fastest way to run the project. The frontend has its own server routes and sample data ready to go.
 
-#### Step 1: Open Terminal & Navigate to Frontend
+#### Step 1: Open Terminal and Go to the Frontend Folder
 ```bash
 cd frontend
 ```
 
-#### Step 2: Configure Your API Key
-Copy the template and paste your Google Gemini API key:
+#### Step 2: Make Your Environment File
+Make a copy of the example environment file:
 ```bash
-# Windows PowerShell
+# On Windows PowerShell:
 Copy-Item .env.example .env.local
 
-# macOS or Linux
+# On macOS or Linux:
 cp .env.example .env.local
 ```
 
-Inside `frontend/.env.local`, set your secret key:
+Open `frontend/.env.local` in your editor and paste your API key:
 ```env
-# Google Gemini API Key (Server-side only — NEVER use NEXT_PUBLIC_ prefix)
+# Keep your key secret here. Never share this file.
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-#### Step 3: Install & Launch
+#### Step 3: Install and Start
 ```bash
 npm install
 npm run dev
 ```
-Open **[http://localhost:3000](http://localhost:3000)** in your browser!
+Now open **[http://localhost:3000](http://localhost:3000)** in your web browser!
 
 ---
 
-### Option 2: Full-Stack (Next.js + FastAPI)
+### Option 2: Full-Stack (Next.js + Python)
 
-Run both the Python backend (with SQLite database and event bus) and Next.js frontend concurrently.
+Use this option if you want to run the Python backend and database alongside the frontend.
 
-#### Terminal 1 — Start Python FastAPI Backend:
+#### Terminal 1 -- Start the Python Backend:
 ```bash
-# 1. Navigate to backend directory
+# 1. Go to the backend folder
 cd backend
 
-# 2. Create Python virtual environment
+# 2. Create a virtual environment
 python -m venv .venv
 
-# 3. Activate virtual environment
+# 3. Turn on the virtual environment
 # Windows PowerShell:
 .\.venv\Scripts\activate
-# macOS / Linux:
+# macOS or Linux:
 source .venv/bin/activate
 
-# 4. Install dependencies
+# 4. Install python packages
 pip install -r requirements.txt
 
-# 5. Start server
+# 5. Start the backend server
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
-*API Swagger documentation is live at `http://127.0.0.1:8000/docs`.*
+*You can see the backend API docs in your browser at `http://127.0.0.1:8000/docs`.*
 
-#### Terminal 2 — Start Next.js Frontend:
+#### Terminal 2 -- Start the Frontend:
 ```bash
 cd frontend
 npm install
@@ -174,112 +181,112 @@ npm run dev
 
 ---
 
-## ⌨️ Platform Command Reference & Hotkeys
+## Commands and Keyboard Shortcuts
 
-### Terminal Commands
+### Helpful Terminal Commands
 
 | Action | Windows PowerShell | macOS / Linux |
 | :--- | :--- | :--- |
-| **Clone Repository** | `git clone https://github.com/Sujalkathait/Alexa-Campus-Copilot.git` | `git clone https://github.com/Sujalkathait/Alexa-Campus-Copilot.git` |
-| **Enter Frontend** | `cd "Alexa+ Campus Copilot\frontend"` | `cd "Alexa+ Campus Copilot/frontend"` |
-| **Setup Environment** | `Copy-Item .env.example .env.local` | `cp .env.example .env.local` |
+| **Download Code** | `git clone https://github.com/Sujalkathait/Alexa-Campus-Copilot.git` | `git clone https://github.com/Sujalkathait/Alexa-Campus-Copilot.git` |
+| **Open Frontend** | `cd "Alexa+ Campus Copilot\frontend"` | `cd "Alexa+ Campus Copilot/frontend"` |
+| **Copy Env File** | `Copy-Item .env.example .env.local` | `cp .env.example .env.local` |
 | **Install Packages** | `npm install` | `npm install` |
-| **Dev Server** | `npm run dev` | `npm run dev` |
-| **Production Build** | `npm run build` | `npm run build` |
-| **Production Start** | `npm run start` | `npm run start` |
+| **Start Dev Mode** | `npm run dev` | `npm run dev` |
+| **Build for Production**| `npm run build` | `npm run build` |
+| **Run Production** | `npm run start` | `npm run start` |
 
-### Keyboard Shortcuts in Web App
+### In-App Keyboard Shortcuts
 
-| Shortcut | Action | Scope |
+| Shortcut | What It Does | Where It Works |
 | :--- | :--- | :--- |
-| `⌘ + K` or `Ctrl + K` | Open Universal Command Palette | Global |
-| `Esc` | Close active modal dialog or command palette | Global |
-| `Tab` / `Shift + Tab` | Accessible keyboard focus navigation | Global |
-| `Space` | Toggle audio playback / speech synthesizer | AI Assistant |
+| `Ctrl + K` or `Cmd + K` | Opens the quick search box | Anywhere in the app |
+| `Esc` | Closes any open modal box or search bar | Anywhere in the app |
+| `Tab` / `Shift + Tab` | Moves focus between buttons and inputs | Anywhere in the app |
+| `Space` | Turns speech audio playback on or off | AI Assistant page |
 
 ---
 
-## 🧩 The 7 Core Academic Modules
+## The 7 Features Explained Simply
 
-### 1. Academic Dashboard
-- **Welcome Banner:** Dynamic greeting displaying the student name, semester week, and current date.
-- **4 Real-Time Metrics:** Pending deadlines count, hours planned today, completion velocity %, and productivity score (0-100).
-- **Proactive AI Recommendation:** Highlights the top urgent assignment and suggests optimal study hours.
-- **Today's Schedule:** Quick list of today's study sessions with one-click completion toggles.
+### 1. Dashboard
+- **Greeting Card:** Shows your name, current semester week, and today's date.
+- **4 Key Numbers:** Live counts for pending homework, today's planned hours, overall completion rate, and your productivity score.
+- **Top AI Tip:** Shows your most urgent task and tells you the best time to study for it today.
+- **Today's Plan:** Lists study blocks for today with quick checkboxes to mark them done.
 
 ### 2. AI Campus Assistant (Gemini 3.8 Flash)
-- **Official Google GenAI SDK:** Communicates with Google's `gemini-3.8-flash` model via secure server routes.
-- **Voice Recognition:** Microphone toggle with live waveform animation and speech recognition status.
-- **Voice Synthesis:** Reads AI recommendations aloud with dedicated speech toggle controls.
-- **Tool Action Badges:** Automatically identifies when tasks are added, plans generated, or reminders scheduled.
-- **Suggested Prompt Pills:** Fast 1-click prompts (*"Plan 2 hours tonight"*, *"Explain Virtual Memory"*).
+- **Official Google SDK:** Uses Google's `gemini-3.8-flash` model to answer your study questions quickly.
+- **Voice Button:** Tap the microphone icon to speak. Live wave lines show when it hears you.
+- **Audio Read-Out:** Listen to the AI's answer with the built-in speaker button.
+- **Smart Tags:** Shows labels when the AI adds a homework item, builds a plan, or sets a reminder.
+- **Quick Buttons:** Click ready-made buttons like *"Plan 2 hours tonight"* or *"Explain Virtual Memory"*.
 
-### 3. Coursework & Assignment Manager
-- **Full CRUD:** Create, view, edit, and delete coursework items with subject tags and estimated effort.
-- **Priority Categorization:** Categorize items into `HIGH`, `MEDIUM`, and `LOW` priority badges.
-- **Dual View Modes:** Seamlessly toggle between rich Responsive Cards and high-density Table View.
-- **Dynamic Timers:** Relative countdown timers (e.g. `Due in 24h` or pulsing `OVERDUE` badges).
+### 3. Homework & Assignments Manager
+- **Complete Controls:** Add, view, edit, and remove homework items easily.
+- **Priority Labels:** Mark tasks as `HIGH`, `MEDIUM`, or `LOW` priority so you know what matters most.
+- **Two Views:** Switch between visual cards or a neat table view.
+- **Countdown Timers:** Shows simple countdowns like `Due in 24h` or red `OVERDUE` alerts.
 
 ### 4. Smart Study Planner
-- **3 Algorithmic Planning Strategies:**
-  - **Deadline-First:** Prioritizes coursework closest to deadline to protect semester grades.
-  - **Priority-First:** Schedules high-stakes exams and credit-heavy assignments before smaller tasks.
-  - **Workload-Balanced:** Distributes study sessions evenly across subjects with built-in restorative intervals.
-- **Target Hours Slider:** Adjust scheduled daily hours from 30 minutes up to 6 hours.
-- **Weekly Schedule Grid:** 7-day visual matrix with interactive preview and save functionality.
+- **3 Simple Ways to Schedule:**
+  - **Deadline-First:** Puts homework that is due soonest at the top of your list.
+  - **Priority-First:** Schedules major exams and big projects before smaller homework tasks.
+  - **Workload-Balanced:** Spreads study time evenly across your subjects with short 10-minute breaks.
+- **Time Slider:** Choose how many hours you want to study each day (from 30 minutes up to 6 hours).
+- **Weekly Timetable:** A clear 7-day grid where you can preview and save your study blocks.
 
-### 5. Intelligent Reminders
-- **Submission Alerts:** Schedule time-sensitive reminder notifications tied to assignments and quizzes.
-- **30-Min Deduplication Guard:** Automatically prevents duplicate reminders created within a 30-minute window.
-- **Status Controls:** Mark alerts delivered, reset notifications, or cancel them with ease.
+### 5. Smart Reminders
+- **Custom Alerts:** Pick dates and times to get reminded about quizzes, readings, or submissions.
+- **Anti-Duplicate Safety:** Automatically stops the same reminder from being created twice in 30 minutes.
+- **Easy Toggles:** Mark reminders as done, snooze them, or clear them in one click.
 
-### 6. Academic Productivity Analytics
-- **Weekly Focus Bar Chart:** Visual bar charts comparing daily study hours against semester goals.
-- **Subject Distribution:** Color-coded distribution showing workload percentages across academic subjects.
-- **Coursework Velocity Table:** Historical tracking of assigned tasks, completions, and velocity rates.
+### 6. Study Analytics
+- **Weekly Bar Chart:** Simple bars showing how many hours you studied each day versus your daily goal.
+- **Subject Pie Chart:** Color-coded circles showing which subjects take up most of your study time.
+- **Speed Table:** Shows how many assignments you finished this week and your completion speed.
 
-### 7. Student Profile, Auth & Danger Zone
-- **Student Profile:** Full name, university email, academic major, and graduation year.
-- **1-Click Demo Sign-In:** Instant evaluation as *Alex Morgan* (B.S. Computer Science) with one click.
-- **User Session Pill:** Navbar avatar pill showing student initials, online status, and session menu.
-- **Double-Confirmation Account Deletion:** Requires students to type `"DELETE"` before wiping local data.
+### 7. Profile, Login & Safety Zone
+- **Student Profile:** Keeps your name, university email, degree major, and graduation year.
+- **1-Click Demo Login:** Click one button to sign in as *Alex Morgan* (Computer Science major) and test.
+- **User Menu:** Top-right circle showing your initials, online status, and log out button.
+- **Safe Account Delete:** If you want to delete your account, you must type `"DELETE"` first so nothing gets erased by mistake.
 
 ---
 
-## 🧠 The 13 UI/UX Design Laws Applied
+## The 13 Design Rules We Used
 
-| Law / Principle | Practical Implementation in Alexa+ Campus Copilot |
+| Rule / Principle | How We Used It in This App |
 | :--- | :--- |
-| **1. Visual Hierarchy** | High-contrast status badges (`#f43f5e`, `#3b82f6`) stand out against deep navy backgrounds (`#0a0d14`, `#0f1422`). Typography scales logically from `text-2xl` headings down to monospace tags. |
-| **2. Gestalt Principles** | **Common Regions & Proximity:** Related controls are enclosed within distinct 1px bordered cards (`border-slate-800`). Form inputs sit directly below their labels. |
-| **3. Hick's Law** | Eliminates decision fatigue. Navigation is structured into exactly 7 focused tabs; the Study Planner simplifies scheduling down to 3 clear strategies. |
-| **4. Fitts's Law** | Primary action buttons (`+ New Assignment`, `Generate Plan`, `Sign In`) feature generous touch targets (44px+ height) positioned along natural cursor trajectories. |
-| **5. Jakob's Law** | Uses familiar SaaS conventions: top-right user avatar dropdown, left sidebar navigation, top search bar with `⌘K` / `Ctrl+K`, and standard modal dialog patterns. |
-| **6. Miller's Law** | Information is chunked into groups of 3–5 items per view (e.g., 4 metric KPI cards, 3 planning strategies, 4 suggestion pills). |
-| **7. Recognition over Recall** | Contextual search, recent chat history, active filter pills, and quick suggestions prevent users from having to remember past inputs. |
-| **8. Immediate Feedback** | Immediate visual feedback for all interactions: active button transforms, live soundwave animations during voice input, loading skeletons, and floating toast notifications. |
-| **9. Affordance** | Solid primary fills, distinct focus rings (`focus:border-blue-500 focus:ring-1`), hover border illumination, and explicit cursor indicators. |
-| **10. Progressive Disclosure** | Essential task details are shown first; danger zones (Delete Account), rubrics, and advanced settings expand only upon request. |
-| **11. Error Prevention & Recovery** | Accidental account deletion is prevented by requiring explicit typed verification (`"DELETE"`). Action buttons remain disabled until the confirmation phrase matches. |
-| **12. Accessibility (WCAG 2.2 AA)** | 4.5:1 contrast ratios on dark mode, full keyboard navigation (`Tab`, `Esc`, `⌘K`), and visible focus indicators. |
-| **13. Cognitive Load Reduction** | Strips out generic templates, random glassmorphism, and oversized headers in favor of a clean Linear/Stripe dark aesthetic. |
+| **1. Visual Hierarchy** | Important alerts and badges use bright colors (`#f43f5e`, `#3b82f6`) that stand out clearly on dark navy cards. Text sizes make titles easy to spot first. |
+| **2. Grouping (Gestalt)** | Controls that belong together are placed inside clean bordered boxes. Labels sit directly above their input fields so forms are easy to fill out. |
+| **3. Hick's Law (Simple Choices)** | The main menu has just 7 clear tabs. The study planner gives you 3 easy planning choices so you never feel lost. |
+| **4. Fitts's Law (Big Buttons)** | Main buttons like `+ New Assignment` and `Generate Plan` are large and easy to click on phones, laptops, and tablets. |
+| **5. Familiar Layout (Jakob's Law)**| Uses normal web patterns: menu on the left, search bar at the top, profile on the top right. You know how to use it right away. |
+| **6. Miller's Law (Chunking)** | Numbers and lists are broken into small groups of 3 to 5 items so you never feel overwhelmed. |
+| **7. Easy to Remember** | Search bars, recent chats, and suggestion pills save you from having to remember old homework details. |
+| **8. Fast Feedback** | Buttons change color when clicked, microphone lines move when you talk, and toast alerts appear when tasks are saved. |
+| **9. Clear Buttons (Affordance)** | Buttons look clickable with solid fills and colored borders when your mouse hovers over them. |
+| **10. Show Info When Needed** | Simple cards show basic details first. Complex settings and rubrics open only when you click them. |
+| **11. Mistake Prevention** | To delete an account, you must type the word `"DELETE"` in capital letters first. The button stays disabled until you do. |
+| **12. Easy to Read (Accessibility)**| High contrast between text and background colors makes everything readable. You can navigate the whole app with just the keyboard. |
+| **13. Clean and Calm** | No noisy gradients, no random popups, and no giant fonts. It stays calm and focused like Linear or Stripe. |
 
 ---
 
-## 🔒 Google Gemini API Integration & Security
+## How the Gemini AI Works
 
-### Security Architecture
-- **Zero Frontend Leakage:** The `GEMINI_API_KEY` is accessed exclusively on the server in `src/app/api/chat/route.ts`. It is **never** prefixed with `NEXT_PUBLIC_` and never sent to client browsers.
-- **Git Protection:** Both `.env` and `.env.local` files are strictly excluded from version control via `.gitignore`.
+### Privacy and Security
+- **Server-Side Only:** Your `GEMINI_API_KEY` stays on the server inside `src/app/api/chat/route.ts`. It is **never** sent to the student's browser.
+- **Hidden from Git:** Both `.env` and `.env.local` files are ignored by git so your key is never uploaded to GitHub.
 
-### Rate Limiting & Quota Management
-- **Sliding-Window Rate Limiter:** Protects against abuse by capping requests at 20 queries per minute per IP. Returns `429 Too Many Requests` with `Retry-After` headers.
-- **In-Memory LRU Cache:** Exact queries (e.g. *"Explain Virtual Memory"*) are cached for 10 minutes to save API tokens and avoid redundant calls.
-- **Strict Token Limits:** Input queries are capped at 1,000 characters, history is limited to 4 turns, and responses are constrained to `800` output tokens.
-- **Resilient Fallback Engine:** If Google's API returns a 429 quota limit or temporary 503 spike, Campus Copilot automatically catches the error and provides built-in academic recommendations without crashing.
+### Quota and Speed Optimization
+- **Rate Limit:** The server limits each user to 20 questions per minute. This stops accidental spam and protects your Google quota.
+- **Smart Memory Cache:** If you ask the same question twice within 10 minutes, the server returns the saved answer right away without using API tokens.
+- **Length Caps:** User messages are kept under 1,000 characters, chat history is limited to 4 messages, and answers are capped at 800 tokens.
+- **Offline Backup Mode:** If your internet drops or Google's API is busy, the app gives helpful built-in study suggestions so you can keep working.
 
 ```typescript
-// Official Google GenAI SDK Usage (Server-Side Only)
+// How the server calls Gemini safely
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -292,209 +299,210 @@ const response = await ai.models.generateContent({
 
 ---
 
-## 🎙️ Sample Voice & Text Prompts
+## Example Things You Can Ask the AI
 
-| User Speaks or Types | Intelligent Action Taken by Copilot |
+| What You Say or Type | What the Assistant Does for You |
 | :--- | :--- |
-| *"Plan my study for 2.5 hours tonight."* | Generates study blocks for upcoming assignments and adds them to today's schedule. |
-| *"Remind me about the Operating Systems paper tomorrow at 9 AM."* | Checks deduplication guard and schedules an alert with status badge. |
-| *"Add CS301 Problem Set due Friday, high priority, 120 minutes."* | Creates assignment record with deadline timer badge and tags. |
-| *"Explain Dijkstra's algorithm for my midterm."* | Provides structured technical summary with time complexity breakdown. |
-| *"What assignments are due in the next 48 hours?"* | Queries open assignments and summarizes overdue and urgent deadlines. |
+| *"Plan my study for 2.5 hours tonight."* | Creates study blocks for your upcoming homework and adds them to today's timetable. |
+| *"Remind me about the Operating Systems paper tomorrow at 9 AM."* | Checks that there are no duplicate reminders and schedules an alert for 9:00 AM. |
+| *"Add CS301 Problem Set due Friday, high priority, 120 minutes."* | Saves the homework item with a countdown badge and adds it to your assignments list. |
+| *"Explain Dijkstra's algorithm for my midterm."* | Writes a clean, simple explanation with steps and time complexity. |
+| *"What assignments are due in the next 48 hours?"* | Checks your active tasks and highlights anything that is due soon or overdue. |
 
 ---
 
-## 🏛️ Design Patterns & Architecture
+## How the Code is Organized
 
-The application is structured around 5 industry-standard design patterns:
+The backend and frontend use 5 well-known coding patterns to keep the project neat and easy to update:
 
 ```text
-├── Strategy Pattern      -> Pluggable study schedule algorithms (DeadlineFirst, PriorityFirst, WorkloadBalance)
-├── Adapter Pattern       -> GeminiAdapter conforming to unified AIProvider protocol
-├── Repository Pattern    -> Decoupled data access layer with 30-min window reminder deduplication
-├── Command Pattern       -> Safe dispatch of AI tool calls (CreateAssignmentCommand, GeneratePlanCommand)
-└── Observer Pattern      -> Domain Event Bus notifying real-time activity feeds
+├── Strategy Pattern      -> 3 study planning options (DeadlineFirst, PriorityFirst, WorkloadBalance)
+├── Adapter Pattern       -> Gemini adapter that connects cleanly to external AI models
+├── Repository Pattern    -> Database helper that stops duplicate reminders within 30 minutes
+├── Command Pattern       -> Safe runner that checks tasks before creating them
+└── Observer Pattern      -> Event broadcaster that updates the recent activity feed
 ```
 
-1. **Strategy Pattern (`PlanningStrategy`):** Decoupled scheduling algorithms allow dynamic swapping between Deadline-First, Priority-First, and Workload-Balanced strategies.
-2. **Adapter Pattern (`AIProvider`):** Standardizes external AI providers (Google Gemini and Offline Fallback) behind a unified interface.
-3. **Repository Pattern:** Separates database access from business rules while implementing automated 30-minute reminder deduplication.
-4. **Command Pattern (`CommandDispatcher`):** Validates and executes natural-language AI tool invocations through safe, typed commands.
-5. **Observer Pattern (`EventBus`):** Emits asynchronous domain events (`AssignmentCreatedEvent`, `PlanGeneratedEvent`) to maintain live activity feed logs.
+1. **Strategy Pattern:** Lets the app easily switch between Deadline-First, Priority-First, and Workload-Balanced schedules.
+2. **Adapter Pattern:** Keeps the AI code separated so switching between Google Gemini and offline backup mode is smooth.
+3. **Repository Pattern:** Keeps database queries clean and runs the 30-minute reminder duplicate check.
+4. **Command Pattern:** Makes sure AI tool actions (like creating assignments) are checked for errors before running.
+5. **Observer Pattern:** Sends small alerts when tasks are added so the recent activity feed updates automatically.
 
 ---
 
-## ☁️ Vercel Deployment Walkthrough
+## How to Deploy on Vercel
 
-Campus Copilot is deployment-ready for **Vercel** with zero custom configuration.
+You can put this app online for free using **Vercel** in about 2 minutes.
 
 ```
-GitHub Repository ──> Vercel Build (Next.js 15) ──> Serverless Deployment
+GitHub Repository --> Vercel Build (Next.js 15) --> Live Website
 ```
 
-### 4-Step Vercel Deployment:
-1. Push your code to GitHub:
+### 4 Easy Steps to Deploy:
+1. Push your latest code to your GitHub repository:
    ```bash
    git push origin main
    ```
-2. Navigate to [Vercel Dashboard](https://vercel.com/new) and click **"Import Project"**.
-3. Select your `Alexa-Campus-Copilot` repository:
-   - **Framework Preset:** Next.js
-   - **Root Directory:** Click Edit and select `frontend`
-   - **Environment Variables:** Add `GEMINI_API_KEY` with your secret key from Google AI Studio.
-4. Click **Deploy**! Your site is live in under 90 seconds.
+2. Open the [Vercel New Project Page](https://vercel.com/new) and click **"Import"** next to your `Alexa-Campus-Copilot` repo.
+3. Set these project options:
+   - **Framework:** Next.js
+   - **Root Directory:** Click Edit and select the `frontend` folder.
+   - **Environment Variables:** Add `GEMINI_API_KEY` and paste your Google AI Studio key.
+4. Click **Deploy**! Your website will be live in about 90 seconds.
 
-> **Zero Dependency Guarantee:** When deployed standalone on Vercel without the Python server, the frontend automatically utilizes its built-in serverless API route and fallback datasets—all 7 sections function completely with zero broken buttons.
+> **Works Standalone:** When hosted on Vercel, the frontend uses its own server routes and sample data. Everything works without needing an external Python server.
 
 ---
 
-## 📁 Project Directory Tree
+## Project Folder Tree
 
 ```text
 Alexa+ Campus Copilot/
-├── backend/                              # Python FastAPI Backend
+├── backend/                              # Optional Python FastAPI Backend
 │   ├── app/
-│   │   ├── api/                          # REST API Endpoints
-│   │   │   ├── assignments.py            # Assignment CRUD routes
+│   │   ├── api/                          # Backend API routes
+│   │   │   ├── assignments.py            # Homework routes
 │   │   │   ├── chat.py                   # Chat orchestrator route
-│   │   │   ├── dashboard.py              # Summary statistics
-│   │   │   ├── reminders.py              # Reminder management
+│   │   │   ├── dashboard.py              # Summary numbers
+│   │   │   ├── reminders.py              # Reminder routes
 │   │   │   └── study_plans.py            # Study planning routes
 │   │   ├── application/
-│   │   │   ├── commands/                 # Command Pattern handlers
-│   │   │   └── services/                 # Domain Services
+│   │   │   ├── commands/                 # Command runners
+│   │   │   └── services/                 # Helper services
 │   │   ├── core/
-│   │   │   ├── config.py                 # Pydantic v2 Settings (GEMINI_API_KEY)
-│   │   │   └── database.py               # SQLAlchemy database engine
+│   │   │   ├── config.py                 # App settings and API keys
+│   │   │   └── database.py               # SQLite database setup
 │   │   ├── domain/
-│   │   │   ├── entities/models.py        # User, Assignment, Session, Reminder
-│   │   │   ├── events/                   # Domain Event Bus & Observers
-│   │   │   └── strategies/               # Strategy Pattern planning algorithms
+│   │   │   ├── entities/models.py        # User, Assignment, Session tables
+│   │   │   ├── events/                   # Event broadcaster
+│   │   │   └── strategies/               # 3 study planning strategies
 │   │   └── infrastructure/
-│   │       ├── ai/                       # GeminiAdapter
-│   │       └── repositories/             # Repository Pattern data layers
-│   ├── tests/                            # Pytest Test Suite (20/20 Passing)
+│   │       ├── ai/                       # Gemini adapter
+│   │       └── repositories/             # Database access code
+│   ├── tests/                            # 20 tests (all passing)
+│   ├── pytest.ini                        # Test runner settings
 │   ├── requirements.txt                  # Python dependencies
-│   └── run.py                            # Backend entrypoint
+│   └── run.py                            # Backend start script
 │
-├── frontend/                             # Next.js 15 TypeScript Frontend
+├── frontend/                             # Main Next.js 15 Frontend
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── api/chat/route.ts         # Server-Side Gemini Route Handler
-│   │   │   ├── globals.css               # Tailwind CSS v4 & theme variables
-│   │   │   ├── layout.tsx                # Next.js App Router Root Layout
-│   │   │   └── page.tsx                  # Master Viewport Orchestrator
+│   │   │   ├── api/chat/route.ts         # Secure server-side Gemini chat route
+│   │   │   ├── globals.css               # Colors and Tailwind styling
+│   │   │   ├── layout.tsx                # Main HTML layout
+│   │   │   └── page.tsx                  # Main screen controller
 │   │   ├── components/
 │   │   │   ├── layout/
-│   │   │   │   ├── Navbar.tsx            # Header with search & user dropdown
-│   │   │   │   └── Sidebar.tsx           # Left navigation & weekly goals
+│   │   │   │   ├── Navbar.tsx            # Top bar with search and profile
+│   │   │   │   └── Sidebar.tsx           # Left side navigation menu
 │   │   │   ├── modules/
-│   │   │   │   ├── analytics/            # Productivity charts & velocity tables
-│   │   │   │   ├── assignments/          # Coursework cards, tables & modals
-│   │   │   │   ├── auth/                 # AuthModal & DeleteAccountModal
-│   │   │   │   ├── chat/                 # AI Assistant with voice waveform
-│   │   │   │   ├── dashboard/            # KPI cards & recommendations
-│   │   │   │   ├── planner/              # Multi-strategy calendar planner
-│   │   │   │   ├── reminders/            # Scheduled alerts & deduplication
-│   │   │   │   └── settings/             # Student profile & danger zone
-│   │   │   └── ui/                       # Reusable Toast, Modal, Dialogs
+│   │   │   │   ├── analytics/            # Charts and study speed tables
+│   │   │   │   ├── assignments/          # Homework cards, tables, and forms
+│   │   │   │   ├── auth/                 # Sign in and delete account modals
+│   │   │   │   ├── chat/                 # Voice assistant and chat window
+│   │   │   │   ├── dashboard/            # Overview cards and schedule
+│   │   │   │   ├── planner/              # Weekly calendar and study plans
+│   │   │   │   ├── reminders/            # Reminder list and creation form
+│   │   │   │   └── settings/             # Profile details and danger zone
+│   │   │   └── ui/                       # Reusable buttons, modals, and toasts
 │   │   ├── hooks/
-│   │   │   ├── useToast.ts               # Toast alert state management
-│   │   │   └── useVoice.ts               # Web Speech Recognition & TTS
+│   │   │   ├── useToast.ts               # Little popup messages
+│   │   │   └── useVoice.ts               # Voice recording and voice player
 │   │   ├── services/
-│   │   │   └── api.ts                    # Centralized API service & offline dataset
+│   │   │   └── api.ts                    # Frontend API connector and demo data
 │   │   └── types/
-│   │       └── index.ts                  # TypeScript Domain Interfaces
-│   ├── .env.example                      # Safe environment template
-│   ├── next.config.mjs                   # Next.js configuration & rewrites
-│   ├── package.json                      # Next.js 15, React 19, @google/genai
-│   ├── tsconfig.json                     # Strict TypeScript configuration
-│   └── vercel.json                       # Vercel deployment configuration
+│   │       └── index.ts                  # TypeScript types for all items
+│   ├── .env.example                      # Safe template for keys
+│   ├── next.config.mjs                   # Next.js settings
+│   ├── package.json                      # Next.js and React dependencies
+│   ├── tsconfig.json                     # TypeScript settings
+│   └── vercel.json                       # Vercel deploy configuration
 │
-├── .gitignore                            # Root Git ignore rules
-└── README.md                             # Master documentation (500 lines)
+├── .gitignore                            # Files to keep out of Git
+└── README.md                             # Main documentation (500 lines)
 ```
 
 ---
 
-## 📡 API Endpoints Reference
+## API Routes List
 
-### Next.js Serverless Route (Frontend)
+### Next.js Server Route (Frontend)
 
-| Method | Endpoint | Description | Payload Sample |
+| Method | URL | What It Does | Example Input |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/chat` | AI Chat with Gemini & tool calling | `{"message": "Plan study for 2 hours", "conversation_history": []}` |
+| `POST` | `/api/chat` | Sends message to Gemini AI and gets answer | `{"message": "Plan study for 2 hours", "conversation_history": []}` |
 
-### FastAPI REST Endpoints (Backend)
+### FastAPI Routes (Optional Python Backend)
 
-| Method | Endpoint | Description |
+| Method | URL | What It Does |
 | :--- | :--- | :--- |
-| `GET` | `/api/health` | Health status and database connectivity check |
-| `GET` | `/api/dashboard/summary` | Fetch dashboard KPIs, urgent tasks, and today's schedule |
-| `GET` | `/api/assignments` | Query assignments with optional `?status=` and `?priority=` filters |
-| `POST` | `/api/assignments` | Create a new assignment with estimated minutes |
-| `PATCH` | `/api/assignments/{id}` | Update assignment completion or syllabus details |
-| `DELETE` | `/api/assignments/{id}` | Delete assignment record |
-| `POST` | `/api/study-plans/generate` | Generate algorithmic study plan with selected strategy |
-| `GET` | `/api/reminders` | Query active and pending reminders |
-| `POST` | `/api/reminders` | Schedule reminder with automated 30-min deduplication guard |
+| `GET` | `/api/health` | Checks if the backend server and database are healthy |
+| `GET` | `/api/dashboard/summary` | Gets dashboard stats, urgent tasks, and today's schedule |
+| `GET` | `/api/assignments` | Gets all homework items (supports `?status=` and `?priority=` filters) |
+| `POST` | `/api/assignments` | Adds a new homework item with estimated study minutes |
+| `PATCH` | `/api/assignments/{id}` | Updates homework details or marks it finished |
+| `DELETE` | `/api/assignments/{id}` | Removes a homework item |
+| `POST` | `/api/study-plans/generate` | Generates a study timetable using your chosen strategy |
+| `GET` | `/api/reminders` | Gets all active reminders |
+| `POST` | `/api/reminders` | Saves a reminder with the 30-minute duplicate check |
 
 ---
 
----
+## Colors and Theme Details
 
-## 🎨 Design Tokens & UI Theme Palette
-
-| Token Role | Hex Code | Tailwind Equivalent | Purpose / Application |
+| Color Name | Hex Code | Tailwind Class | Where It Is Used |
 | :--- | :--- | :--- | :--- |
-| **Canvas Background** | #0a0d14 | g-[#0a0d14] | Deep space canvas background |
-| **Card Surface** | #0f1422 | g-[#0f1422] | Cards, modals, and navigation sidebars |
-| **Electric Blue** | #3b82f6 | 	ext-blue-500 / g-blue-600 | Primary action buttons and active indicators |
-| **Aura Violet** | #8b5cf6 | 	ext-violet-400 / g-violet-600 | AI copilot highlights and recommendation pills |
-| **Status Emerald** | #10b981 | 	ext-emerald-400 | Completed items and high productivity metrics |
-| **Warning Amber** | #f59e0b | 	ext-amber-400 | Medium priority tasks and 24-48h deadlines |
-| **Danger Rose** | #f43f5e | 	ext-rose-400 | Overdue assignments and account deletion |
-| **Subtle Border** | #1e293b | order-slate-800 | Crisp 1px container delineation |
+| **Deep Background** | `#0a0d14` | `bg-[#0a0d14]` | Whole page canvas background |
+| **Card Surface** | `#0f1422` | `bg-[#0f1422]` | Cards, popups, and sidebar panels |
+| **Electric Blue** | `#3b82f6` | `text-blue-500` / `bg-blue-600` | Main action buttons and active tab markers |
+| **Soft Violet** | `#8b5cf6` | `text-violet-400` / `bg-violet-600` | AI highlights and recommendation badges |
+| **Green Success** | `#10b981` | `text-emerald-400` | Completed homework and good study scores |
+| **Amber Warning** | `#f59e0b` | `text-amber-400` | Medium priority tasks and 24-48 hour alerts |
+| **Rose Red** | `#f43f5e` | `text-rose-400` | Overdue homework and delete account button |
+| **Card Border** | `#1e293b` | `border-slate-800` | Clean thin lines dividing boxes |
 
 ---
 
-## ⚙️ Environment Variables Matrix
+## Settings and Environment File
 
-| Variable Name | Required | Default Value | Description |
+| Setting Name | Is It Required? | Default Value | What It Does |
 | :--- | :--- | :--- | :--- |
-| GEMINI_API_KEY | Yes (for AI) | None | Secret Google AI Studio API key |
-| NODE_ENV | Automatic | production | Environment mode managed by Next.js & Vercel |
-| NEXT_PUBLIC_APP_NAME | Optional | Alexa+ Campus Copilot | Display branding title for application headers |
-| PORT | Optional | 3000 | Local development port override |
-
-## ❓ Troubleshooting & Frequently Asked Questions (FAQ)
-
-#### Q1: Where do I get a free Gemini API key?
-**Answer:** Visit [Google AI Studio](https://aistudio.google.com/app/apikey), sign in with your Google account, and click **"Create API Key"**. Paste the key into `frontend/.env.local`.
-
-#### Q2: What happens if I don't have a Gemini API key yet?
-**Answer:** Campus Copilot includes an intelligent offline academic engine. All 7 tabs, scheduling algorithms, and study plan generators continue working seamlessly using realistic offline academic models.
-
-#### Q3: Why doesn't the microphone button activate voice recognition?
-**Answer:** The voice assistant requires the standard Web Speech Recognition API. Ensure you are using a modern browser (Google Chrome, Microsoft Edge, Brave, or Safari) and click **"Allow"** when prompted for microphone permissions.
-
-#### Q4: How do I test the full backend test suite?
-**Answer:** In the `backend` directory with your virtual environment activated, run `pytest -v`. All 20 unit and integration tests will execute and pass in under 0.5s.
-
-#### Q5: Can I deploy the frontend without running the Python backend?
-**Answer:** Yes. The Next.js frontend has built-in serverless API route handlers and fallback datasets, making it 100% functional when deployed standalone to Vercel.
-
-#### Q6: How do I test the account deletion feature safely?
-**Answer:** Open **Settings**, scroll down to the red **Danger Zone**, and click **"Delete Account"**. A safety modal will appear requiring you to type `"DELETE"` before permanently clearing local data.
+| `GEMINI_API_KEY` | Yes (for live AI) | None | Your secret key from Google AI Studio |
+| `NODE_ENV` | Automatic | `production` | Set by Next.js and Vercel automatically |
+| `NEXT_PUBLIC_APP_NAME` | No | `Alexa+ Campus Copilot` | The app title shown in the browser tab |
+| `PORT` | No | `3000` | The local port number for development |
 
 ---
 
-## 📄 License & Acknowledgments
+## Frequently Asked Questions (FAQ)
 
-Distributed under the **MIT License**. See `LICENSE` for details.
+#### Q1: How do I get a free Gemini API key?
+**Answer:** Go to [Google AI Studio](https://aistudio.google.com/app/apikey), sign in with your Google account, and click **"Create API Key"**. Paste it into your `frontend/.env.local` file.
 
-- **Design Inspiration:** Linear, Stripe, Notion, and Raycast.
-- **AI Engine:** Google Gemini Cloud Platform (`gemini-3.8-flash`).
+#### Q2: What happens if I do not add an API key?
+**Answer:** The app continues working in demo mode. All 7 tabs, the timetable maker, homework list, and charts will work with built-in sample tasks.
+
+#### Q3: Why does the microphone button not hear me?
+**Answer:** Voice recognition works through the standard browser Speech Recognition API. Use a modern browser like Google Chrome, Microsoft Edge, or Safari, and click **"Allow"** when it asks to use your microphone.
+
+#### Q4: How do I run the Python backend tests?
+**Answer:** In the `backend` folder with your virtual environment active, run `pytest -v`. All 20 tests will finish in less than 1 second.
+
+#### Q5: Can I run this without the Python backend?
+**Answer:** Yes. The Next.js frontend has built-in server routes and sample data. It works 100% on its own and can be deployed directly to Vercel.
+
+#### Q6: How do I test the Delete Account button safely?
+**Answer:** Go to **Settings**, scroll down to the red **Danger Zone**, and click **"Delete Account"**. A box will pop up asking you to type `"DELETE"`. If you type anything else, the delete button will not let you click it.
+
+---
+
+## License and Credits
+
+This project is licensed under the **MIT License**. Check the `LICENSE` file for details.
+
+- **Design Style:** Inspired by Linear, Stripe, Notion, and Raycast.
+- **AI Engine:** Google Gemini Cloud (`gemini-3.8-flash`).
 - **Icons:** [Lucide Icons](https://lucide.dev/).
 
-**Engineered with ❤️ for college students striving for academic excellence.**
+**Built for university students who want to study smarter and save time.**
