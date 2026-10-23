@@ -1,61 +1,32 @@
-# Alexa+ Campus Copilot — Frontend Application 🎓⚡
+# Alexa+ Campus Copilot — Frontend 🎓⚡
 
-> **Next.js 15, TypeScript, Tailwind CSS, and Official Google GenAI SDK (`gemini-3.8-flash`)**  
-> Designed following Linear, Stripe, and Notion dark navy design aesthetics.
+> Next.js 15, TypeScript, Tailwind CSS v4, and official Google GenAI SDK (`gemini-3.8-flash`).
 
----
+## ⚡ Quick Run
 
-## 🚀 How to Run
-
-### 1. Install Dependencies
 ```bash
-npm install
-```
-
-### 2. Configure Environment
-Create `.env.local` in this directory:
-```bash
-# Windows PowerShell
-Copy-Item .env.example .env.local
-
-# macOS / Linux
+# 1. Setup env
 cp .env.example .env.local
-```
 
-Add your Gemini API key:
-```env
-GEMINI_API_KEY=your_actual_gemini_api_key_here
-```
+# 2. Add GEMINI_API_KEY in .env.local
+# GEMINI_API_KEY=your_key_here
 
-### 3. Run Development Server
-```bash
+# 3. Install & Start
+npm install
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open **[http://localhost:3000](http://localhost:3000)**.
 
-### 4. Build for Production
-```bash
-npm run build
-npm run start
-```
-
----
-
-## 🌟 Key Modules
-
-- **Dashboard:** Welcome greeting, KPI cards, urgent deadlines, and AI study recommendations.
-- **AI Campus Assistant:** Google GenAI SDK (`gemini-3.8-flash`), speech recognition, text-to-speech audio, and prompt pills.
-- **Assignments:** CRUD coursework manager, priority filters, and card/table view toggle.
-- **Study Planner:** 3 algorithmic planning strategies (Deadline-First, Priority-First, Workload-Balanced) with weekly calendar matrix.
-- **Reminders:** Scheduled notifications with 30-min deduplication guard.
-- **Analytics:** Weekly focus distribution bar charts and semester completion velocity.
-- **Settings:** Profile preferences, timezone selector, and Account Security Danger Zone.
-- **Authentication:** Student sign in, registration, 1-click demo student sign-in, safe logout, and double-confirmation **Delete Account** data wipe.
-
----
+## 🚀 Key Modules
+- **Dashboard:** Deadlines, study hours, velocity metrics, and AI recommendations.
+- **AI Campus Assistant:** Gemini 3.8 Flash, SpeechRecognition, text-to-speech audio, and prompt pills.
+- **Assignments:** Complete CRUD, priority filters (`HIGH`, `MEDIUM`, `LOW`), card/table view toggle.
+- **Study Planner:** 3 algorithmic strategies (Deadline-First, Priority-First, Workload-Balanced) + weekly calendar.
+- **Reminders:** Scheduled alerts with 30-min deduplication guard.
+- **Analytics:** Weekly focus bar charts and semester velocity tables.
+- **Auth & Account:** Sign in, register, 1-click demo student, logout, and double-confirmation **Delete Account**.
 
 ## ☁️ Vercel Deployment
-
 1. Set **Root Directory** to `frontend`.
-2. Add `GEMINI_API_KEY` to **Environment Variables** in the Vercel dashboard.
+2. Add `GEMINI_API_KEY` to Vercel Environment Variables.
 3. Deploy!
